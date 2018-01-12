@@ -1,0 +1,60 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 27
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    implementation 'com.android.support:appcompat-v7:27.0.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'am.util:printer:2.1.0'
+}
+
+ext {
+    bintrayRepo = 'library'
+    bintrayName = 'bt-printer'
+
+    publishedGroupId = 'com.chinawutong'
+    libraryName = 'BTPrinter'
+    artifact = 'bt-printer'
+
+    libraryDescription = '蓝牙打印小票'
+
+    siteUrl = 'https://github.com/wenmin92/pay-lib'
+    gitUrl = 'https://github.com/wenmin92/pay-lib.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'wenmin92'
+    developerName = 'Changzhu Zhao'
+    developerEmail = 'wenmin92@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: 'https://gist.githubusercontent.com/wenmin92/3583757c2d3377aba7deeb81d28e7eef/raw/5ef8cb1936136e68adbd821f6291f7f571e66de3/maven-publish.gradle'

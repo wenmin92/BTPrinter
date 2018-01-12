@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">BT Printer Library</string>
+
+    <string name="printer_state_message_1">生成打印数据…</string>
+    <string name="printer_state_message_2">生成打印数据成功，开始创建连接…</string>
+    <string name="printer_state_message_3">创建连接成功，开始发送数据…</string>
+    <string name="printer_state_message_4">开始写入数据…</string>
+    <string name="printer_result_message_1">打印完成！</string>
+    <string name="printer_result_message_2">生成打印数据失败！</string>
+    <string name="printer_result_message_3">创建连接失败！请检查关联打印机%1$s是否打开！</string>
+    <string name="printer_result_message_4">获取输出失败！</string>
+    <string name="printer_result_message_5">写入数据失败！</string>
+    <string name="printer_result_message_6">必要的参数不能为空！</string>
+    <string name="printer_result_message_7">关闭连接出错！</string>
+    <string name="printer_result_message_8">打印失败！</string>
+    <string name="searching">(搜索中…)</string>
+    <string name="failed_not_support_bluetooth">该设备不支持蓝牙，无法使用蓝牙打印功能</string>
+    <string name="failed_could_not_open_bluetooth">未能成功打开蓝牙，无法使用蓝牙打印功能</string>
+    <string name="state_received_command">接收到打印指令</string>
+    <string name="state_init_print_sequence">使用已关联打印机启动打印程序</string>
+    <string name="loading">加载中…</string>
+    <string name="canceled">已取消打印</string>
+</resources>
