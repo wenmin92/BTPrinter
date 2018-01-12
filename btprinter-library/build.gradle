@@ -41,10 +41,10 @@ ext {
     libraryName = 'BTPrinter'
     artifact = 'bt-printer'
 
-    libraryDescription = '蓝牙打印小票'
+    libraryDescription = '封装蓝牙打印小票功能'
 
-    siteUrl = 'https://github.com/wenmin92/pay-lib'
-    gitUrl = 'https://github.com/wenmin92/pay-lib.git'
+    siteUrl = 'https://github.com/wenmin92/BTPrinter'
+    gitUrl = 'https://github.com/wenmin92/BTPrinter.git'
 
     libraryVersion = '1.0.0'
 
@@ -57,4 +57,4 @@ ext {
     allLicenses = ["Apache-2.0"]
 }
 
-apply from: 'https://gist.githubusercontent.com/wenmin92/3583757c2d3377aba7deeb81d28e7eef/raw/5ef8cb1936136e68adbd821f6291f7f571e66de3/maven-publish.gradle'
+apply from: 'https://gist.githubusercontent.com/wenmin92/3583757c2d3377aba7deeb81d28e7eef/raw/8ac8cdfc1b924925d2217b8a050c4810029ad340/maven-publish-new.gradle'
