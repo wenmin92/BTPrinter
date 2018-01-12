@@ -20,9 +20,9 @@ public class MainActivity extends AppCompatActivity {
                 BtPrinter.getInstance()
                         .init(MainActivity.this)
                         .setPrintBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.order))
-                        .setCancelable(true) // 是否可通过点击加载框外中断打印，默认为true
+                        .setCancelable(true)   // 是否可通过点击加载框外中断打印，默认为true
                         .setStateShowing(true) // 是否Toast显示打印进度，默认为true
-                        .setTailBlankLines(3) // 打印最后的空白行数，用于将已打印的内容走出来，默认为3
+                        .setTailBlankLines(3)  // 打印最后的空白行数，用于将已打印的内容走出来，默认为3
                         .print();
             }
         });
@@ -37,13 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         BtPrinter.getInstance().onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         BtPrinter.getInstance().onDestroy();
+        super.onDestroy();
     }
 }
