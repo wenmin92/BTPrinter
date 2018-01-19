@@ -1,5 +1,6 @@
 package com.chinawutong.library;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -37,6 +38,7 @@ import static android.content.Context.MODE_PRIVATE;
  * 2. 针对OOM做了屏蔽处理，这种方式肯定不行
  * 3. 无法中断打印过程，强行关闭流会导致空指针
  * 4. 使用图片打印时，对图片的处理时间过长
+ * // FIXME: 2018/1/19 打印乱码
  */
 @SuppressWarnings("unused")
 public class BtPrinter implements ListDialog.OnDismissListener, ListDialog.OnItemSelectedListener,
@@ -94,7 +96,7 @@ public class BtPrinter implements ListDialog.OnDismissListener, ListDialog.OnIte
     }
 
     private static class BtPrinterHolder {
-        private static final BtPrinter INSTANCE = new BtPrinter();
+        @SuppressLint("StaticFieldLeak") private static final BtPrinter INSTANCE = new BtPrinter();
     }
 
     /**
@@ -142,6 +144,8 @@ public class BtPrinter implements ListDialog.OnDismissListener, ListDialog.OnIte
             return;
         }
 
+        mListAdapter = new ListDialog.ListAdapter(mActivityRef.get());
+
         // Enable Bluetooth.
         if (!mBtAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -149,8 +153,6 @@ public class BtPrinter implements ListDialog.OnDismissListener, ListDialog.OnIte
         } else {
             queryDevice();
         }
-
-        mListAdapter = new ListDialog.ListAdapter(mActivityRef.get());
     }
 
     /**
@@ -219,6 +221,8 @@ public class BtPrinter implements ListDialog.OnDismissListener, ListDialog.OnIte
         Bundle args = new Bundle();
         args.putSerializable(ListDialog.ARG_ADAPTER, mListAdapter);
         mListDialog.setArguments(args);
+        mListDialog.setmOnDismissListener(this);
+        mListDialog.setmOnItemSelectedListener(this);
         mListDialog.show(mActivityRef.get().getFragmentManager(), "bt_list");
     }
 
@@ -319,6 +323,7 @@ public class BtPrinter implements ListDialog.OnDismissListener, ListDialog.OnIte
                 else showTip(R.string.printer_state_message_4);
                 break;
             case PrintSocketHolder.STATE_4: // 关闭输出流
+                saveDevice();
                 break;
         }
     }

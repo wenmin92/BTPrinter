@@ -7,7 +7,7 @@
 #### 使用非常简单，只需要3步：
 1. 添加依赖
   ```gradle
-  compile 'com.chinawutong:bt-printer:1.0.0'
+  compile 'com.chinawutong:bt-printer:1.0.2'
   ```
 2. 调用
   ```java
@@ -33,3 +33,41 @@
       super.onDestroy();
   }
   ```
+
+
+# 上传bintray操作步骤
+1. bintray上的操作
+  1. 先注册bintray账号
+  2. 新建一个仓库
+2. 本地配置
+  1. 在项目根目录下的`build.gradle`文件中，添加`dependencies`:
+    ```gradle
+    classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
+    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
+    ```
+  2. 在库的`build.gradle`文件中，添加`ext`:
+    ```gradle
+    ext {
+        bintrayRepo = 'library'
+        bintrayName = 'bt-printer'
+    
+        publishedGroupId = 'com.chinawutong'
+        libraryName = 'BTPrinter'
+        artifact = 'bt-printer'
+    
+        libraryDescription = '封装蓝牙打印小票功能'
+    
+        siteUrl = 'https://github.com/wenmin92/BTPrinter'
+        gitUrl = 'https://github.com/wenmin92/BTPrinter.git'
+    
+        libraryVersion = '1.0.0'
+    
+        developerId = 'wenmin92'
+        developerName = 'Changzhu Zhao'
+        developerEmail = 'wenmin92@gmail.com'
+    
+        licenseName = 'The Apache Software License, Version 2.0'
+        licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+        allLicenses = ["Apache-2.0"]
+    }
+    ```
