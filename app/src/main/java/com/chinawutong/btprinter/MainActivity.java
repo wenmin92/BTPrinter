@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.chinawutong.library.BtPrinter;
@@ -23,6 +24,12 @@ public class MainActivity extends AppCompatActivity {
                         .setCancelable(true)   // 是否可通过点击加载框外中断打印，默认为true
                         .setStateShowing(true) // 是否Toast显示打印进度，默认为true
                         .setTailBlankLines(3)  // 打印最后的空白行数，用于将已打印的内容走出来，默认为3
+                        .setOnBtPrinterResultListener(new BtPrinter.OnBtPrinterResultListener() {
+                            @Override
+                            public void onResult(int errorCode) {
+                                Log.d("MainActivity", "errorCode:" + errorCode);
+                            }
+                        })
                         .print();
             }
         });

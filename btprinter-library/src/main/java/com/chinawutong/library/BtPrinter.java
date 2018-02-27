@@ -16,16 +16,16 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.chinawutong.library.core.PrintDataMaker;
+import com.chinawutong.library.core.PrintExecutor;
+import com.chinawutong.library.core.PrintSocketHolder;
+import com.chinawutong.library.core.PrinterWriter;
+import com.chinawutong.library.core.PrinterWriter80mm;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import am.util.printer.PrintDataMaker;
-import am.util.printer.PrintExecutor;
-import am.util.printer.PrintSocketHolder;
-import am.util.printer.PrinterWriter;
-import am.util.printer.PrinterWriter80mm;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -43,6 +43,16 @@ import static android.content.Context.MODE_PRIVATE;
 @SuppressWarnings("unused")
 public class BtPrinter implements ListDialog.OnDismissListener, ListDialog.OnItemSelectedListener,
         PrintSocketHolder.OnStateChangedListener, PrintExecutor.OnPrintResultListener {
+
+    @SuppressWarnings("WeakerAccess") public static final int ERROR_0 = 0;       // 打印完成
+    @SuppressWarnings("WeakerAccess") public static final int ERROR_1001 = 1001; // 生成数据失败
+    @SuppressWarnings("WeakerAccess") public static final int ERROR_1002 = 1002; // 创建Socket失败
+    @SuppressWarnings("WeakerAccess") public static final int ERROR_1003 = 1003; // 获取输出流失败
+    @SuppressWarnings("WeakerAccess") public static final int ERROR_1004 = 1004; // 写入数据失败
+    @SuppressWarnings("WeakerAccess") public static final int ERROR_1005 = 1005; // 必要参数不能为空
+    @SuppressWarnings("WeakerAccess") public static final int ERROR_1006 = 1006; // 关闭Socket出错
+    @SuppressWarnings("WeakerAccess") public static final int ERROR_1007 = 1007; // 打印失败
+    @SuppressWarnings("WeakerAccess") public static final int ERROR_2001 = 2001; // 取消打印
 
     private static final int REQ_ENABLE_BT = 10001;
     private static final String SP_FILE_CUR_PRINTER = "cur_printer";
@@ -62,6 +72,7 @@ public class BtPrinter implements ListDialog.OnDismissListener, ListDialog.OnIte
     private boolean isCanceled;
     private boolean cancelable = true;
     private int mPrintState;
+    private OnBtPrinterResultListener mOnBtPrinterResultListener;
 
     // Create a BroadcastReceiver for ACTION_FOUND.
     // 用于开启“发现设备”后，通知状态
@@ -268,7 +279,7 @@ public class BtPrinter implements ListDialog.OnDismissListener, ListDialog.OnIte
             public List<byte[]> getPrintData(int type) {
                 ArrayList<byte[]> data = new ArrayList<>();
                 try {
-                    PrinterWriter printer = new PrinterWriter80mmCustom(10, 554);
+                    PrinterWriter printer = new PrinterWriter80mm(10, 554);
                     printer.setAlignCenter();
                     data.add(printer.getDataAndReset());
 
@@ -337,33 +348,42 @@ public class BtPrinter implements ListDialog.OnDismissListener, ListDialog.OnIte
         if (executor != null) executor.closeSocket();
         dismissLoading();
         if (isCanceled) {
+            setOnBtPrinterResult(ERROR_2001);
             return;
         }
         switch (errorCode) {
             case PrintSocketHolder.ERROR_0:
                 showTip(R.string.printer_result_message_1);
                 saveDevice();
+                setOnBtPrinterResult(ERROR_0);
                 break;
             case PrintSocketHolder.ERROR_1:
                 showTip(R.string.printer_result_message_2);
+                setOnBtPrinterResult(ERROR_1001);
                 break;
             case PrintSocketHolder.ERROR_2:
                 showTip(mActivityRef.get().getString(R.string.printer_result_message_3, mDevice.getName()));
+                setOnBtPrinterResult(ERROR_1002);
                 break;
             case PrintSocketHolder.ERROR_3:
                 showTip(R.string.printer_result_message_4);
+                setOnBtPrinterResult(ERROR_1003);
                 break;
             case PrintSocketHolder.ERROR_4:
                 showTip(R.string.printer_result_message_5);
+                setOnBtPrinterResult(ERROR_1004);
                 break;
             case PrintSocketHolder.ERROR_5:
                 showTip(R.string.printer_result_message_6);
+                setOnBtPrinterResult(ERROR_1005);
                 break;
             case PrintSocketHolder.ERROR_6:
                 showTip(R.string.printer_result_message_7);
+                setOnBtPrinterResult(ERROR_1006);
                 break;
             case PrintSocketHolder.ERROR_100:
                 showTip(R.string.printer_result_message_8);
+                setOnBtPrinterResult(ERROR_1007);
                 break;
         }
     }
@@ -442,5 +462,24 @@ public class BtPrinter implements ListDialog.OnDismissListener, ListDialog.OnIte
     public BtPrinter setCancelable(boolean cancelable) {
         this.cancelable = cancelable;
         return this;
+    }
+
+    /**
+     * 设置打印回调
+     */
+    @SuppressWarnings("unused")
+    public BtPrinter setOnBtPrinterResultListener(OnBtPrinterResultListener listener) {
+        mOnBtPrinterResultListener = listener;
+        return this;
+    }
+
+    private void setOnBtPrinterResult(int errorCode) {
+        if (mOnBtPrinterResultListener != null) {
+            mOnBtPrinterResultListener.onResult(errorCode);
+        }
+    }
+
+    public interface OnBtPrinterResultListener {
+        void onResult(int errorCode);
     }
 }

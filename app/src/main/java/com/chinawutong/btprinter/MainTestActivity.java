@@ -16,15 +16,15 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chinawutong.library.core.PrintDataMaker;
+import com.chinawutong.library.core.PrintExecutor;
+import com.chinawutong.library.core.PrintSocketHolder;
+import com.chinawutong.library.core.PrinterWriter;
+import com.chinawutong.library.core.PrinterWriter80mm;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import am.util.printer.PrintDataMaker;
-import am.util.printer.PrintExecutor;
-import am.util.printer.PrintSocketHolder;
-import am.util.printer.PrinterWriter;
-import am.util.printer.PrinterWriter80mm;
 
 public class MainTestActivity extends AppCompatActivity implements ListDialog.OnDismissListener, ListDialog.OnItemSelectedListener, PrintSocketHolder.OnStateChangedListener, PrintExecutor.OnPrintResultListener {
 
