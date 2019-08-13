@@ -1,4 +1,4 @@
-# BTPrinter	# Initial page
+# BTPrinter
 > 封装了通过蓝牙打印小票的功能。	
 
 
